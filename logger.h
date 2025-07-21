@@ -54,7 +54,8 @@ typedef enum
     LOG_LEVEL_INFO,      //!< General informational messages
     LOG_LEVEL_WARNING,   //!< Warnings that do not stop execution
     LOG_LEVEL_ERROR,     //!< Critical errors
-    LOG_LEVEL_COUNT      //!< Number of log levels (used for validation)
+    LOG_LEVEL_COUNT,     //!< Number of log levels (used for validation)
+    LOG_LEVEL_OFF = 99   //!< Disable all logging output
 } log_level_t;
 
 /* =======================================================================
