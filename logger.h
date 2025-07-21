@@ -68,7 +68,7 @@ typedef enum
  * @note Do NOT modify this directly. Use LOGGER_SET_LOGGING_LEVEL() instead.
  *       This variable is defined as a common symbol so it can be overridden.
  */
-__attribute__((common)) log_level_t gLogLevel = LOG_LEVEL_DEBUG;
+__attribute__((common)) log_level_t gLogLevel;
 
 /*!
  * @brief Sets the global logging level.
