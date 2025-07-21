@@ -126,6 +126,92 @@ static inline void LOGGER_SET_LOGGING_LEVEL(log_level_t level)
             HAL_UART_Transmit(&huart1, (uint8_t *) msg, strlen(msg), HAL_MAX_DELAY);               \
         } while (0)
 
+/* =======================================================================
+ * [MODULE LOGGING MACROS]
+ * =======================================================================
+ */
+
+#ifdef MODULE_REGISTRED
+
+/*!
+ * @brief Logs a DEBUG-level message.
+ */
+#define LOG_DEBUG(fmt, ...)                                                                        \
+        do                                                                                         \
+        {                                                                                          \
+            if (CHECK_LOG_LEVEL(LOG_LEVEL_DEBUG))                                                  \
+            {                                                                                      \
+                if ((CURRENT_LOG_MODULE) && (LOG_LEVEL_DEBUG >= CURRENT_LOG_MODULE->level))        \
+                {                                                                                  \
+                    char msg[LOG_BUFFER_SIZE];                                                     \
+                    (void) snprintf(msg, LOG_BUFFER_SIZE, KWHT "[DBG][%s][%s:%d]: " fmt KNRM,      \
+                                    CURRENT_LOG_MODULE->name, __func__, __LINE__, ##__VA_ARGS__);  \
+                    HAL_UART_Transmit(&huart1, (uint8_t *) msg, strlen(msg), HAL_MAX_DELAY);       \
+                }                                                                                  \
+            }                                                                                      \
+        } while (0)
+
+/*!
+ * @brief Logs an INFO-level message.
+ */
+#define LOG_INFO(fmt, ...)                                                                         \
+        do                                                                                         \
+        {                                                                                          \
+            if (CHECK_LOG_LEVEL(LOG_LEVEL_INFO))                                                   \
+            {                                                                                      \
+                if ((CURRENT_LOG_MODULE) && (LOG_LEVEL_INFO >= CURRENT_LOG_MODULE->level))         \
+                {                                                                                  \
+                    char msg[LOG_BUFFER_SIZE];                                                     \
+                    (void) snprintf(msg, LOG_BUFFER_SIZE, KGRN "[INF][%s][%s:%d]: " KNRM fmt,      \
+                                    CURRENT_LOG_MODULE->name, __func__, __LINE__, ##__VA_ARGS__);  \
+                    HAL_UART_Transmit(&huart1, (uint8_t *) msg, strlen(msg), HAL_MAX_DELAY);       \
+                }                                                                                  \
+            }                                                                                      \
+        } while (0)
+
+/*!
+ * @brief Logs a WARNING-level message.
+ */
+#define LOG_WARNING(fmt, ...)                                                                      \
+        do                                                                                         \
+        {                                                                                          \
+            if (CHECK_LOG_LEVEL(LOG_LEVEL_WARNING))                                                \
+            {                                                                                      \
+                if ((CURRENT_LOG_MODULE) && (LOG_LEVEL_WARNING >= CURRENT_LOG_MODULE->level))      \
+                {                                                                                  \
+                    char msg[LOG_BUFFER_SIZE];                                                     \
+                    (void) snprintf(msg, LOG_BUFFER_SIZE, KYEL "[WRN][%s][%s:%d]: " KNRM fmt,      \
+                                    CURRENT_LOG_MODULE->name, __func__, __LINE__, ##__VA_ARGS__);  \
+                    HAL_UART_Transmit(&huart1, (uint8_t *) msg, strlen(msg), HAL_MAX_DELAY);       \
+                }                                                                                  \
+            }                                                                                      \
+        } while (0)
+
+/*!
+ * @brief Logs an ERROR-level message.
+ */
+#define LOG_ERROR(fmt, ...)                                                                        \
+        do                                                                                         \
+        {                                                                                          \
+            if (CHECK_LOG_LEVEL(LOG_LEVEL_ERROR))                                                  \
+            {                                                                                      \
+                if ((CURRENT_LOG_MODULE) && (LOG_LEVEL_ERROR >= CURRENT_LOG_MODULE->level))        \
+                {                                                                                  \
+                    char msg[LOG_BUFFER_SIZE];                                                     \
+                    (void) snprintf(msg, LOG_BUFFER_SIZE, KRED "[ERR][%s][%s:%d]: " KNRM fmt,      \
+                                    CURRENT_LOG_MODULE->name, __func__, __LINE__, ##__VA_ARGS__);  \
+                    HAL_UART_Transmit(&huart1, (uint8_t *) msg, strlen(msg), HAL_MAX_DELAY);       \
+                }                                                                                  \
+            }                                                                                      \
+        } while (0)
+
+#else
+
+/* =======================================================================
+ * [NON-MODULE LOGGING MACROS]
+ * =======================================================================
+ */
+
 /*!
  * @brief Logs a DEBUG-level message.
  */
@@ -185,6 +271,8 @@ static inline void LOGGER_SET_LOGGING_LEVEL(log_level_t level)
                 HAL_UART_Transmit(&huart1, (uint8_t *) msg, strlen(msg), HAL_MAX_DELAY);           \
             }                                                                                      \
         } while (0)
+
+#endif // MODULE_REGISTRED
 
 #endif /* LOGGER_H */
 
